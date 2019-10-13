@@ -1,0 +1,109 @@
+<project>
+    <!-- model version is always 4.0.0 for Maven 2.x POMs -->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- project coordinates .. -->
+
+    <groupId>com.stupica.base</groupId>
+    <artifactId>jmsClient</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+    <name>jmsClient</name>
+    <organization>
+        <name>developer.stupica.com</name>
+        <url>http://www.stupica.com</url>
+    </organization>
+    <url>http://developer.stupica.com/maven/</url>
+
+    <!-- library dependencies -->
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/javax.jms/javax.jms-api -->
+        <dependency>
+            <groupId>javax.jms</groupId>
+            <artifactId>javax.jms-api</artifactId>
+            <version>2.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <!--
+        -->
+        <dependency>
+            <groupId>com.stupica.base</groupId>
+            <artifactId>globalVar</artifactId>
+            <version>1.4.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.activemq/artemis-jms-client -->
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>artemis-jms-client</artifactId>
+            <version>2.10.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.2</version>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Implementation-Version>${project.version}</Implementation-Version>
+                            <Specification-Version>${project.version}</Specification-Version>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ftp</artifactId>
+                <version>3.3.1</version>
+            </extension>
+        </extensions>
+    </build>
+
+    <distributionManagement>
+        <!--
+        <repository>
+            <id>bDevRelease</id>
+            <url>ftp://developer.stupica.com/maven2</url>
+        </repository>
+        -->
+        <repository>
+            <id>bDevRelease2</id>
+            <url>ftp://developer.dev404.net/maven2</url>
+        </repository>
+    </distributionManagement>
+
+    <developers>
+        <developer>
+            <id>bostjanst</id>
+            <name>Bostjan Stupica</name>
+            <email>bostjan@stupica.com</email>
+            <url>http://www.stupica.com</url>
+            <organization>Developer404</organization>
+            <organizationUrl>http://www.stupica.com</organizationUrl>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+                <role>admin</role>
+            </roles>
+            <timezone>Europe/Berlin</timezone>
+            <properties>
+                <picUrl>http://bostjan.dev404.net/about_me/myimg01.jpg</picUrl>
+            </properties>
+        </developer>
+    </developers>
+
+</project>
