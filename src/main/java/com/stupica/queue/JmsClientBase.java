@@ -27,7 +27,7 @@ public class JmsClientBase {
     protected int iMsgTTL = 1000 * 60 * 60 * 24 * 365;
 
     /**
-     * terminal escape sequence (starts white text)
+     * configuration parameters
      */
     public String sQueueAddr = "tcp://localhost:61616";
     public String sQueueName = "generic.queue";
@@ -46,7 +46,7 @@ public class JmsClientBase {
     /**
      * Object constructor
      * /
-    public JmsClient() {
+    public JmsClientBase() {
     } */
 
 
@@ -57,7 +57,7 @@ public class JmsClientBase {
      *
      * @return int iResult	1 = AllOK;
      */
-    protected int initialize(String asQueueAddr, String asQueueName, int aiType, String asClientId) {
+    public int initialize(String asQueueAddr, String asQueueName, int aiType, String asClientId) {
         sQueueAddr = asQueueAddr;
         sQueueName = asQueueName;
         iType = aiType;
@@ -72,7 +72,7 @@ public class JmsClientBase {
      *
      * @return int iResult	1 = AllOK;
      */
-    protected int initialize() {
+    public int initialize() {
         // Local variables
         int             iResult;
 
@@ -92,7 +92,7 @@ public class JmsClientBase {
      *
      * ..
      */
-    protected void setSessionMode(int aiMode) {
+    public void setSessionMode(int aiMode) {
         iSessionMode = aiMode;
     }
 
@@ -101,7 +101,7 @@ public class JmsClientBase {
      *
      * ..
      */
-    protected void setMsgTTL(int aiValue) {
+    public void setMsgTTL(int aiValue) {
         iMsgTTL = aiValue;
     }
 
@@ -284,7 +284,7 @@ public class JmsClientBase {
      *
      * @return int iResult	1 = AllOK;
      */
-    protected int disconnect() {
+    public int disconnect() {
         // Local variables
         int             iResult;
 
