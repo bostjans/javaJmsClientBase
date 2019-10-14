@@ -14,12 +14,12 @@ import static org.junit.Assert.assertEquals;
 
 public class TestClientProducer {
 
-    public JmsClient    objClient = null;
+    public JmsClientBase objClient = null;
 
 
     @Before
     public void setUp() throws Exception {
-        objClient = new JmsClient();
+        objClient = new JmsClientBase();
     }
 
     @After

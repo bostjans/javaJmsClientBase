@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 /**
  * Created by bostjans on 24/03/19.
  */
-public class JmsClient {
+public class JmsClientBase {
     // Variables
     //
     public final int iTypeConsumer = 1;
@@ -40,7 +40,7 @@ public class JmsClient {
     private MessageConsumer messageConsumer;
     private MessageProducer messageProducer;
 
-    protected static Logger logger = Logger.getLogger(JmsClient.class.getName());
+    protected static Logger logger = Logger.getLogger(JmsClientBase.class.getName());
 
 
     /**
@@ -435,6 +435,4 @@ public class JmsClient {
         }
         return objMessage;
     }
-
-
 }

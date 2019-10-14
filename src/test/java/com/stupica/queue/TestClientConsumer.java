@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import javax.jms.MapMessage;
 import javax.jms.Message;
-import javax.jms.Session;
 import javax.jms.TextMessage;
 
 import static org.junit.Assert.*;
@@ -17,12 +16,12 @@ import static org.junit.Assert.*;
 
 public class TestClientConsumer {
 
-    public JmsClient    objClient = null;
+    public JmsClientBase objClient = null;
 
 
     @Before
     public void setUp() throws Exception {
-        objClient = new JmsClient();
+        objClient = new JmsClientBase();
     }
 
     @After
