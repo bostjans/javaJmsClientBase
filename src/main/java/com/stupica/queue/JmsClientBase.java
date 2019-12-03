@@ -3,8 +3,6 @@ package com.stupica.queue;
 
 import com.stupica.ConstGlobal;
 
-import org.apache.activemq.artemis.jms.client.ActiveMQJMSConnectionFactory;
-
 import javax.jms.*;
 import javax.jms.Queue;
 import javax.naming.Context;
@@ -196,23 +194,6 @@ public class JmsClientBase {
 //                ex.printStackTrace();
 //            }
 //        }
-
-        // Check previous step
-        if (iResult != ConstGlobal.RETURN_OK) {
-            if (connectionFactory == null) {
-                // create a Connection Factory
-                //connectionFactory = new ActiveMQConnectionFactory(ActiveMQConnection.DEFAULT_BROKER_URL);
-                //connectionFactory = new ActiveMQJMSConnectionFactory(ActiveMQConnection.DEFAULT_BROKER_URL);
-                connectionFactory = new ActiveMQJMSConnectionFactory(sQueueAddr);
-                if (connectionFactory == null) {
-                    iResult = ConstGlobal.RETURN_ERROR;
-                    logger.severe("connect(): Could not get ConnectionFactory object: ActiveMQJMSConnectionFactory!!"
-                            + " URI: " + sQueueAddr);
-                } else {
-                    iResult = ConstGlobal.RETURN_OK;
-                }
-            }
-        }
 
         // Check previous step
         if (iResult == ConstGlobal.RETURN_OK) {
