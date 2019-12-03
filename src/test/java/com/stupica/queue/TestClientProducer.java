@@ -14,6 +14,8 @@ import static org.junit.Assert.assertEquals;
 
 public class TestClientProducer {
 
+    String  qAddr = "tcp://localhost:61616";
+    //String  qAddr = "tcp://artemisdev:61616";
     public JmsClientBase objClient = null;
 
 
@@ -45,7 +47,7 @@ public class TestClientProducer {
         System.out.println("--");
         System.out.println("Test: " + this.getClass().toString() + " - 11");
 
-        iResult = objClient.initialize("tcp://localhost:61616", "unitTest.queue",
+        iResult = objClient.initialize(qAddr, "unitTest.queue",
                 objClient.iTypeProducer, "unitTest-" + this.getClass().toString());
         assertEquals(ConstGlobal.RETURN_OK, iResult);
     }
@@ -61,7 +63,7 @@ public class TestClientProducer {
         System.out.println("--");
         System.out.println("Test: " + this.getClass().toString() + " - 12");
 
-        iResult = objClient.initialize("tcp://localhost:61616", "unitTest.queue",
+        iResult = objClient.initialize(qAddr, "unitTest.queue",
                 objClient.iTypeProducer, "unitTest-" + this.getClass().toString());
         assertEquals(ConstGlobal.RETURN_OK, iResult);
         objClient.setMsgTTL(1000 * 60 * 12); // = 12 min;

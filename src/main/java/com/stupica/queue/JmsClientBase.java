@@ -3,10 +3,14 @@ package com.stupica.queue;
 
 import com.stupica.ConstGlobal;
 
+import org.apache.activemq.artemis.jms.client.ActiveMQJMSConnectionFactory;
+
 import javax.jms.*;
 import javax.jms.Queue;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NameClassPair;
+import javax.naming.NamingEnumeration;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -152,10 +156,33 @@ public class JmsClientBase {
                 logger.severe("connect(): Could not get ConnectionFactory object: JNDI!!"
                         + " URI: " + sQueueAddr
                         + "; Msg.: " + ex.getMessage());
+                //
+                try {
+                    //InitialContext ctx = new InitialContext();
+                    NamingEnumeration<NameClassPair> list = objIc.list("");
+                    while (list.hasMore()) {
+                        System.err.println(list.next().getName());
+                    }
+                } catch (Exception ex2) { }
                 ex.printStackTrace();
             }
         }
-//        // Check previous step
+        // Check previous step
+//        if (iResult == ConstGlobal.RETURN_OK) {
+//            try {
+//                //Now we'll look up the connection factory from which we can create
+//                //connections to myhost:5445:
+//                connectionFactory = (ConnectionFactory)objIc.lookup("connectionFactory");
+//            } catch (Exception ex) {
+//                iResult = ConstGlobal.RETURN_ERROR;
+//                logger.severe("connect(): Could not get ConnectionFactory object: JNDI!!"
+//                        + " URI: " + sQueueAddr
+//                        + "; Msg.: " + ex.getMessage());
+//                ex.printStackTrace();
+//            }
+//        }
+
+        // Check previous step
 //        if (iResult == ConstGlobal.RETURN_OK) {
 //            try {
 //                //And look up the Queue:
@@ -170,18 +197,22 @@ public class JmsClientBase {
 //            }
 //        }
 
-//        // Check previous step
-//        if (iResult == ConstGlobal.RETURN_OK) {
-//            // create a Connection Factory
-//            //connectionFactory = new ActiveMQConnectionFactory(ActiveMQConnection.DEFAULT_BROKER_URL);
-//            //connectionFactory = new ActiveMQJMSConnectionFactory(ActiveMQConnection.DEFAULT_BROKER_URL);
-//            connectionFactory = new ActiveMQJMSConnectionFactory(ServerBase.m_Properties.s_NotifyQueueAddr);
-//            if (connectionFactory == null) {
-//                iResult = ConstGlobal.RETURN_ERROR;
-//                logger.severe("runBefore(): Could not get ConnectionFactory object: ActiveMQJMSConnectionFactory!!"
-//                        + " URI: " + sJMSConn);
-//            }
-//        }
+        // Check previous step
+        if (iResult != ConstGlobal.RETURN_OK) {
+            if (connectionFactory == null) {
+                // create a Connection Factory
+                //connectionFactory = new ActiveMQConnectionFactory(ActiveMQConnection.DEFAULT_BROKER_URL);
+                //connectionFactory = new ActiveMQJMSConnectionFactory(ActiveMQConnection.DEFAULT_BROKER_URL);
+                connectionFactory = new ActiveMQJMSConnectionFactory(sQueueAddr);
+                if (connectionFactory == null) {
+                    iResult = ConstGlobal.RETURN_ERROR;
+                    logger.severe("connect(): Could not get ConnectionFactory object: ActiveMQJMSConnectionFactory!!"
+                            + " URI: " + sQueueAddr);
+                } else {
+                    iResult = ConstGlobal.RETURN_OK;
+                }
+            }
+        }
 
         // Check previous step
         if (iResult == ConstGlobal.RETURN_OK) {
