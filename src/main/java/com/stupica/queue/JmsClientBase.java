@@ -35,6 +35,8 @@ public class JmsClientBase {
     public String sQueueName = "generic.queue";
     protected String sClientId = "programId";
 
+    private String sMsgIdLast = null;
+
     private Connection      objJmsConnection;
     private Queue           objQueue = null;
     private Session         objJmsSession = null;
@@ -105,6 +107,16 @@ public class JmsClientBase {
      */
     public void setMsgTTL(int aiValue) {
         iMsgTTL = aiValue;
+    }
+
+
+    /**
+     * Method: getMsgIdLast
+     *
+     * ..
+     */
+    public String getMsgIdLast() {
+        return sMsgIdLast;
     }
 
 
@@ -415,7 +427,7 @@ public class JmsClientBase {
      *
      * @return Message objMessage	notNull = AllOK;
      */
-    public Message receive(int aiQueueWaitTime) {
+    public synchronized Message receive(int aiQueueWaitTime) {
         // Local variables
         int             iResult;
         Message         objMessage = null;
@@ -443,6 +455,18 @@ public class JmsClientBase {
                         + "; Queue: " + sQueueName
                         + "; Msg.: " + ex.getMessage());
                 //ex.printStackTrace();
+            }
+        }
+        // Check previous step
+        if (iResult == ConstGlobal.RETURN_OK) {
+            try {
+                sMsgIdLast = objMessage.getJMSMessageID();
+            } catch (Exception ex) {
+                iResult = ConstGlobal.RETURN_ERROR;
+                logger.severe("receive(): Error at retrieve of message_ID!"
+                        + " URI: " + sQueueAddr
+                        + "; Queue: " + sQueueName
+                        + "; Msg.: " + ex.getMessage());
             }
         }
         return objMessage;
