@@ -471,4 +471,30 @@ public class JmsClientBase {
         }
         return objMessage;
     }
+
+
+    /**
+     * Method: recover
+     *
+     * Recover ..
+     */
+    public int recover() {
+        // Local variables
+        int             iResult;
+
+        // Initialization
+        iResult = ConstGlobal.RETURN_OK;
+
+        try {
+            objJmsSession.recover();
+            //objJmsSession.rollback();
+        } catch (Exception ex) {
+            iResult = ConstGlobal.RETURN_ERROR;
+            logger.severe("recover(): Error at message rollback!"
+                    + " URI: " + sQueueAddr
+                    + "; MsgId: " + sMsgIdLast
+                    + "; Msg.: " + ex.getMessage());
+        }
+        return iResult;
+    }
 }
