@@ -67,10 +67,12 @@ public class TestClientProducer {
                 objClient.iTypeProducer, "unitTest-" + this.getClass().toString());
         assertEquals(ConstGlobal.RETURN_OK, iResult);
         objClient.setMsgTTL(1000 * 60 * 12); // = 12 min;
-
-        MapMessage objMsg = objClient.getSession().createMapMessage();
-        objMsg.setString("msg", "Hello");
-        objMsg.setJMSType("Map");
-        objClient.getProducer().send(objMsg);
+        {
+            MapMessage objMsg = objClient.getSession().createMapMessage();
+            objMsg.setString("msg", "Hello");
+            objMsg.setJMSType("Map");
+            objClient.getProducer().send(objMsg);
+            assertEquals(ConstGlobal.RETURN_OK, iResult);
+        }
     }
 }

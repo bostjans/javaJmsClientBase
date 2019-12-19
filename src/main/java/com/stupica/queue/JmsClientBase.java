@@ -365,7 +365,7 @@ public class JmsClientBase {
 
 
     /**
-     * Method: initialize
+     * Method: isConnected
      *
      * ..
      */
