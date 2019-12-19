@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.jms.MapMessage;
+import javax.jms.TextMessage;
 
 import static org.junit.Assert.assertEquals;
 
@@ -67,10 +68,19 @@ public class TestClientProducer {
                 objClient.iTypeProducer, "unitTest-" + this.getClass().toString());
         assertEquals(ConstGlobal.RETURN_OK, iResult);
         objClient.setMsgTTL(1000 * 60 * 12); // = 12 min;
-
-        MapMessage objMsg = objClient.getSession().createMapMessage();
-        objMsg.setString("msg", "Hello");
-        objMsg.setJMSType("Map");
-        objClient.getProducer().send(objMsg);
+        {
+            MapMessage objMsg = objClient.getSession().createMapMessage();
+            objMsg.setString("msg", "Hello");
+            objMsg.setJMSType("Map");
+            objClient.getProducer().send(objMsg);
+            assertEquals(ConstGlobal.RETURN_OK, iResult);
+        }
+        {
+            TextMessage objMsg = objClient.getSession().createTextMessage();
+            objMsg.setText("msg" + "=" + "Hello");
+            objMsg.setJMSType("Text");
+            objClient.getProducer().send(objMsg);
+            assertEquals(ConstGlobal.RETURN_OK, iResult);
+        }
     }
 }
