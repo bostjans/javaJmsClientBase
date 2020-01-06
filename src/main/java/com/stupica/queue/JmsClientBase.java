@@ -109,6 +109,15 @@ public class JmsClientBase {
         iMsgTTL = aiValue;
     }
 
+    /**
+     * Method: setClientId
+     *
+     * ..
+     */
+    public void setClientId(String asId) {
+        sClientId = asId;
+    }
+
 
     /**
      * Method: getMsgIdLast
