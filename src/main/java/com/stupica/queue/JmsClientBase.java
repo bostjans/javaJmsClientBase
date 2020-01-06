@@ -251,10 +251,9 @@ public class JmsClientBase {
 
         // Check previous step
         if (iResult == ConstGlobal.RETURN_OK) {
-            // create a Consumer/Producer
+            // create a Message Consumer for receiving messages
             if ((iType == iTypeConsumer) || (iType == iTypeConsumerAndProducer)) {
                 try {
-                    // create a Message Consumer for receiving messages
                     if (objQueue != null) {
                         messageConsumer = objJmsSession.createConsumer(objQueue);
                     } else if (objJmsDestination != null) {
@@ -269,15 +268,13 @@ public class JmsClientBase {
                 }
             }
             if ((iType == iTypeProducer) || (iType == iTypeConsumerAndProducer)) {
-                // create a Producer
+                // create a Message Producer for sending messages
                 try {
-                    // create a Message Consumer for receiving messages
                     messageProducer = objJmsSession.createProducer(objJmsDestination);
-                    //getInstance().messageProducer.setTimeToLive(1000 * 60);
                     messageProducer.setTimeToLive(iMsgTTL);
                 } catch (Exception ex) {
                     iResult = ConstGlobal.RETURN_ERROR;
-                    logger.severe("connect(): Could not create Queue!"
+                    logger.severe("connect(): Could not create Producer!"
                             + " Queue: " + sQueueName
                             + "; Msg.: " + ex.getMessage());
                     ex.printStackTrace();
