@@ -462,6 +462,9 @@ public class JmsClientBase {
                         + "; Msg.: " + ex.getMessage());
                 //ex.printStackTrace();
             }
+            if (objMessage == null) {
+                iResult = ConstGlobal.RETURN_NODATA;
+            }
         }
         // Check previous step
         if (iResult == ConstGlobal.RETURN_OK) {
