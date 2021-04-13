@@ -2,6 +2,7 @@ package com.stupica.queue;
 
 
 import com.stupica.ConstGlobal;
+import com.stupica.GlobalVar;
 
 import javax.jms.*;
 import javax.jms.Queue;
@@ -476,6 +477,44 @@ public class JmsClientBase {
                         + " URI: " + sQueueAddr
                         + "; Queue: " + sQueueName
                         + "; Msg.: " + ex.getMessage());
+            }
+        }
+        return objMessage;
+    }
+
+    /**
+     * Method: receiveCommon
+     *
+     * Read ..
+     *
+     * @return Message objMessage	notNull = AllOK;
+     */
+    public Message receiveCommon(int aiQueueWaitTime) {
+        // Local variables
+        int             iResult;
+        Message         objMessage = null;
+
+        // Initialization
+        iResult = ConstGlobal.RETURN_OK;
+
+        objMessage = receive(aiQueueWaitTime);
+        if (GlobalVar.bIsModeVerbose) {
+            if (objMessage == null) {
+                logger.info("receiveCommon(): No data received! Continue ..");
+            } else {
+                logger.info("receiveCommon(): Data received. Continue ..");
+            }
+        }
+        if (objMessage != null) {
+            if (GlobalVar.bIsModeVerbose) {
+                try {
+                    System.out.println("= Message Receive - type: " + objMessage.getJMSType());
+                } catch (Exception ex) {
+                    iResult = ConstGlobal.RETURN_ERROR;
+                    logger.severe("receiveCommon(): Error at message operation!"
+                            + " Operation: getJMSType()"
+                            + "; Msg.: " + ex.getMessage());
+                }
             }
         }
         return objMessage;
