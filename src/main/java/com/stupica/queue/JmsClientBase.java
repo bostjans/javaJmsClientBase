@@ -29,6 +29,10 @@ public class JmsClientBase {
 
     protected int iMsgTTL = 1000 * 60 * 60 * 24 * 365;
 
+    protected boolean bIsConnected = false;
+    public boolean bIgnoreException = false;
+    public boolean bShouldSetExceptionListener = true;
+
     /**
      * configuration parameters
      */
@@ -293,9 +297,29 @@ public class JmsClientBase {
         }
         // Check previous step
         if (iResult == ConstGlobal.RETURN_OK) {
+            if (bShouldSetExceptionListener) {
+                try {
+                    objJmsConnection.setExceptionListener(new ExceptionListener() {
+                        public void onException(JMSException aobjEx) {
+                            exceptionReactor(aobjEx);
+                        }
+                    });
+                } catch (JMSException ex) {
+                    iResult = ConstGlobal.RETURN_ERROR;
+                    logger.severe("connect(): Could not set exceptionHandler!"
+                            + " URI: " + sQueueAddr
+                            + "; Queue: " + sQueueName
+                            + "; Msg.: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+            }
+        }
+        // Check previous step
+        if (iResult == ConstGlobal.RETURN_OK) {
             // start the connection in order to receive messages
             try {
                 objJmsConnection.start();
+                bIsConnected = true;
             } catch (Exception ex) {
                 iResult = ConstGlobal.RETURN_ERROR;
                 logger.severe("connect(): Could not start receiving messages!"
@@ -328,12 +352,14 @@ public class JmsClientBase {
                 try {
                     objJmsConnection.stop();
                 } catch (Exception ex) {
-                    iResult = ConstGlobal.RETURN_ERROR;
-                    logger.severe("disconnect(): Error at stopping JMS!"
-                            + " URI: " + sQueueAddr
-                            + "; Queue: " + sQueueName
-                            + "; Msg.: " + ex.getMessage());
-                    ex.printStackTrace();
+                    if (!bIgnoreException) {
+                        iResult = ConstGlobal.RETURN_ERROR;
+                        logger.severe("disconnect(): Error at stopping JMS!"
+                                + " URI: " + sQueueAddr
+                                + "; Queue: " + sQueueName
+                                + "; Msg.: " + ex.getMessage());
+                        ex.printStackTrace();
+                    }
                 }
             }
         }
@@ -348,7 +374,9 @@ public class JmsClientBase {
                             + " URI: " + sQueueAddr
                             + "; Queue: " + sQueueName
                             + "; Msg.: " + ex.getMessage());
-                    ex.printStackTrace();
+                    if (!bIgnoreException) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         }
@@ -363,9 +391,37 @@ public class JmsClientBase {
                             + " URI: " + sQueueAddr
                             + "; Queue: " + sQueueName
                             + "; Msg.: " + ex.getMessage());
-                    ex.printStackTrace();
+                    if (!bIgnoreException) {
+                        ex.printStackTrace();
+                    }
                 }
             }
+        }
+        bIsConnected = false;
+        return iResult;
+    }
+
+    /**
+     * Method: reconnect
+     *
+     * ..
+     *
+     * @return int iResult	1 = AllOK;
+     */
+    public int reconnect() {
+        // Local variables
+        int             iResult;
+
+        // Initialization
+        iResult = ConstGlobal.RETURN_OK;
+
+        // Check previous step
+        if (iResult == ConstGlobal.RETURN_OK) {
+            iResult = disconnect();
+        }
+        // Check previous step
+        if (iResult == ConstGlobal.RETURN_OK) {
+            iResult = connect();
         }
         return iResult;
     }
@@ -377,30 +433,54 @@ public class JmsClientBase {
      * ..
      */
     public boolean isConnected() {
-        // Local variables
-        int             iResult;
-
         // Initialization
-        iResult = ConstGlobal.RETURN_OK;
 
         // Check ..
         if (objJmsConnection == null) {
-            return false;
+            bIsConnected = false;
+            return bIsConnected;
+        }
+        if (!bIsConnected) {
+            return bIsConnected;
         }
         try {
             if (objJmsConnection.getMetaData() == null) {
-                return false;
+                bIsConnected = false;
             }
         } catch (Exception ex) {
-            iResult = ConstGlobal.RETURN_ERROR;
             logger.severe("isConnected(): Error at retrieve JMS MetaData!"
                     + " URI: " + sQueueAddr
                     + "; Queue: " + sQueueName
                     + "; Msg.: " + ex.getMessage());
             //ex.printStackTrace();
-            return false;
+            bIsConnected = false;
         }
-        return true;
+        return bIsConnected;
+    }
+
+    /**
+     * Method: exceptionReactor
+     *
+     * ..
+     */
+    public void exceptionReactor(JMSException aobjEx) {
+        // Local variables
+        int         iResult;
+        String      sMsg;
+
+        // Initialization
+        iResult = ConstGlobal.RETURN_OK;
+        sMsg = aobjEx.getMessage();
+
+        // Check ..
+        if (sMsg.toLowerCase().contains("disconnect"))
+            bIsConnected = false;
+
+        if (!bIgnoreException)
+            logger.warning("exceptionReactor(): .. something went wrong!"
+                + " URI: " + sQueueAddr
+                + "; Queue: " + sQueueName
+                + "; Msg.: " + sMsg);
     }
 
 
