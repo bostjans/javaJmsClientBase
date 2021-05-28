@@ -22,8 +22,8 @@ jobs:
         java-version: 1.8
     - name: maven-settings-xml-action
       uses: whelk-io/maven-settings-xml-action@v14
-      with:
-        repositories: '[{ "id": "bDev", "url": "http://developer.stupica.com/maven" }]'
+#      with:
+#        repositories: '[{ "id": "bDev", "url": "http://developer.stupica.com/maven" }]'
 
     - name: Build with Maven
       run: mvn -B -DskipTests package --file pom.xml
