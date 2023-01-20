@@ -81,6 +81,28 @@ public class JmsClientBase {
      *
      * @return int iResult	1 = AllOK;
      */
+    public int initialize(String asQueueAddr) {
+        // Local variables
+        int             iResult;
+
+        // Initialization
+        iResult = ConstGlobal.RETURN_OK;
+        sQueueAddr = asQueueAddr;
+
+        // Check previous step
+        if (iResult == ConstGlobal.RETURN_OK) {
+            iResult = connect();
+        }
+        return iResult;
+    }
+
+    /**
+     * Method: initialize
+     *
+     * ..
+     *
+     * @return int iResult	1 = AllOK;
+     */
     public int initialize() {
         // Local variables
         int             iResult;

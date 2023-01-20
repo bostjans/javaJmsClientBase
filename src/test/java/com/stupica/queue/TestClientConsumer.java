@@ -48,7 +48,7 @@ public class TestClientConsumer {
         System.out.println("--");
         System.out.println("Test: " + this.getClass().toString() + " - 01");
 
-        iResult = objClient.initialize();
+        iResult = objClient.initialize(qAddr);
         assertEquals(ConstGlobal.RETURN_OK, iResult);
         assertTrue(objClient.isConnected());
     }
