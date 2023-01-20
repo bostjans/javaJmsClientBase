@@ -14,9 +14,8 @@ import static org.junit.Assert.assertEquals;
 
 public class TestClientProducer {
 
-    String  qAddr = "tcp://localhost:61616";
-    //String  qAddr = "tcp://artemisdev:61616";
-    public JmsClientBase objClient = null;
+    String  qAddr = "tcp://mq01:61616";
+    public  JmsClientBase objClient = null;
 
 
     @Before

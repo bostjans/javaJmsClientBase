@@ -16,7 +16,8 @@ import static org.junit.Assert.*;
 
 public class TestClientConsumer {
 
-    public JmsClientBase objClient = null;
+    String  qAddr = "tcp://mq01:61616";
+    public  JmsClientBase objClient = null;
 
 
     @Before
@@ -64,7 +65,7 @@ public class TestClientConsumer {
         System.out.println("--");
         System.out.println("Test: " + this.getClass().toString() + " - 11");
 
-        iResult = objClient.initialize("tcp://localhost:61616", "unitTest.queue",
+        iResult = objClient.initialize(qAddr, "unitTest.queue",
                                         objClient.iTypeConsumer, "unitTest-" + this.getClass().toString());
         assertEquals(ConstGlobal.RETURN_OK, iResult);
     }
@@ -82,7 +83,7 @@ public class TestClientConsumer {
         System.out.println("--");
         System.out.println("Test: " + this.getClass().toString() + " - 12");
 
-        iResult = objClient.initialize("tcp://localhost:61616", "unitTest.queue",
+        iResult = objClient.initialize(qAddr, "unitTest.queue",
                 objClient.iTypeConsumer, "unitTest-" + this.getClass().toString());
         assertEquals(ConstGlobal.RETURN_OK, iResult);
         //objClient.setSessionMode(Session.CLIENT_ACKNOWLEDGE);
