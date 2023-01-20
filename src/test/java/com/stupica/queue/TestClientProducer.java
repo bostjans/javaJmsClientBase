@@ -3,27 +3,29 @@ package com.stupica.queue;
 
 import com.stupica.ConstGlobal;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
 
 import javax.jms.MapMessage;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
+@DisplayName("test11Producer")
 public class TestClientProducer {
 
     String  qAddr = "tcp://mq01:61616";
     public  JmsClientBase objClient = null;
 
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         objClient = new JmsClientBase();
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         // Local variables
         int             iResult;
@@ -35,6 +37,7 @@ public class TestClientProducer {
     }
 
 
+    @DisplayName("testProducer11")
     @Test
     public void testProducer11() throws Exception {
         // Local variables
